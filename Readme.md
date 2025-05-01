@@ -1,6 +1,6 @@
 In about 0,1% cases TestWorkflowEnvironment doesn't respect activity ScheduleToCloseTimeout
 
-![Failed tests](.\img\img.png)
+![Failed tests](./img/img.png)
 
 Execute [ScheduleToCloseTimeoutTest](./src/test/java/org/example/ScheduleToCloseTimeoutTest.java)
 
@@ -34,4 +34,4 @@ temporalio doesn't fails activity, which leads to test timeout.
 
 Increasing test timeout to 60 seconds doesn't help, 
 so issue does not caused by temporal VS real time thing: 
-![](.\img\img_1.png)
+![](./img/img_1.png)
