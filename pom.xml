@@ -12,6 +12,7 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <temporalio.version>1.30.1</temporalio.version>
     </properties>
 
     <dependencyManagement>
@@ -44,19 +45,19 @@
         <dependency>
             <groupId>io.temporal</groupId>
             <artifactId>temporal-sdk</artifactId>
-            <version>1.29.0</version>
+            <version>${temporalio.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.temporal</groupId>
             <artifactId>temporal-test-server</artifactId>
-            <version>1.29.0</version>
+            <version>${temporalio.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>io.temporal</groupId>
             <artifactId>temporal-testing</artifactId>
-            <version>1.29.0</version>
+            <version>${temporalio.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
