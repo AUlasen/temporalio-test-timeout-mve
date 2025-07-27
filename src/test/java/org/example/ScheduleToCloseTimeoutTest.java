@@ -5,6 +5,7 @@ import io.temporal.client.WorkflowClient;
 import io.temporal.client.WorkflowOptions;
 import io.temporal.testing.TestWorkflowEnvironment;
 import io.temporal.worker.Worker;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Timeout;
 import org.slf4j.Logger;
@@ -14,22 +15,21 @@ import java.util.Date;
 
 public class ScheduleToCloseTimeoutTest {
 
-    private final String TASK_QUEUE = "testQueue";
+    private final static String TASK_QUEUE = "testQueue";
     Logger logger = LoggerFactory.getLogger(ScheduleToCloseTimeoutTest.class);
 
-    @RepeatedTest(10000)
-    @Timeout(30)
-    public void executeTest() {
+    static TestWorkflowEnvironment testEnv = TestWorkflowEnvironment.newInstance();
+    static WorkflowClient client = testEnv.getWorkflowClient();
 
-        TestWorkflowEnvironment testEnv = TestWorkflowEnvironment.newInstance();
+    @BeforeAll
+    public static void setup() {
+
         Worker worker = testEnv.newWorker(TASK_QUEUE);
-
-        WorkflowClient client = testEnv.getWorkflowClient();
 
         MyActivity activities = new TestActivityImpl();
         worker.registerActivitiesImplementations(activities);
 
-        worker.registerWorkflowImplementationFactory(MyWorkflow.class, () -> new MyWorkflow(){
+        worker.registerWorkflowImplementationFactory(MyWorkflow.class, () -> new MyWorkflow() {
             @Override
             public void run() {
                 var activity = MyActivity.getStub();
@@ -43,6 +43,11 @@ public class ScheduleToCloseTimeoutTest {
 
         // Start test environment
         testEnv.start();
+    }
+
+    @RepeatedTest(10000)
+    @Timeout(30)
+    public void executeTest() {
 
         // Create the workflow stub
         MyWorkflow workflow =
@@ -53,12 +58,12 @@ public class ScheduleToCloseTimeoutTest {
         workflow.run();
         logger.info("After run: {}", new Date(testEnv.currentTimeMillis()));
 
-        testEnv.close();
     }
 }
 
 class TestActivityImpl implements MyActivity {
     Logger logger = LoggerFactory.getLogger(ScheduleToCloseTimeoutTest.class);
+
     @Override
     public void executeActivity() {
 
